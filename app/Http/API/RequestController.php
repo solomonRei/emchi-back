@@ -42,7 +42,7 @@ class RequestController extends Controller
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         try {
-            $data = json_decode(curl_exec($ch), true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode(curl_exec($ch), true);
             curl_close($ch);
 
             if (isset($data['data']) && count($data['data']) > 0) {

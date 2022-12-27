@@ -55,9 +55,11 @@ class CustomLoginController extends Controller
                 return redirect("login")->withErrors(['login' => 'Произошла ошибка!Обратитесь к менеджеру']);
             }
 
+            $userController->getClinics();
             $userController->getDoctors();
             $userController->getServices();
             $userController->getPayments();
+            $userController->getAppointments();
 
             $user = Auth::user();
             $user->login_at = time();

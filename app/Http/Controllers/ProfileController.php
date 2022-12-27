@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Traits\MetaTags;
 use App\Models\Payments;
+use App\Models\Record;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -114,12 +115,32 @@ class ProfileController extends Controller
         return view('frontend.analyzes', compact('user', 'analyzes'));
     }
 
-    public function records()
+    public function records(Request $request)
     {
         $user = Auth::user();
 
         $this->setMeta('Записи', 'Описание');
 
-        return view('frontend.records', compact('user'));
+        if ($request->date === NULL || $request->date === 'latest') {
+            $order = 'DESC';
+        }
+        else {
+            $order = 'ASC';
+        }
+
+        if ($request->type === 'canceled' && $request->type !== NULL) {
+            $appointments = Record::where('user_id', $user->user_id)
+                ->where('status', 'canceled')
+                ->orderBy('date', $order)
+                ->paginate(10);
+        }else {
+            $appointments = Record::where('user_id', $user->user_id)
+                ->orderBy('date', $order)
+                ->paginate(10);
+
+        }
+
+
+        return view('frontend.records', compact('user', 'appointments'));
     }
 }

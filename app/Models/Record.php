@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Record extends Model
 {
@@ -16,17 +17,48 @@ class Record extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'phone',
-        'doctor',
+        'record_id',
+        'user_id',
+        'clinic_id',
+        'order_id',
+        'doctor_id',
         'status',
+        'call_confirmation_status',
+        'appointment_type',
         'date',
-        'requirements',
-        'location',
+        'time',
+        'duration',
+        'note'
     ];
 
-    public function doctors()
+    private function rdate($param, $time = 0)
     {
-        return $this->belongsTo(Doctors::class);
+        if ((int)$time === 0) {
+            $time = time();
+        }
+        $MonthNames = array("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря");
+        if (!str_contains($param, 'M')) {
+            return date($param, $time);
+        }
+
+        return date(str_replace('M', $MonthNames[date('n', $time) - 1], $param), $time);
     }
+
+    protected function dateNormal(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->rdate('d M Y', strtotime($this->date))
+        );
+    }
+
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class, 'doctor_id', 'doctor_id');
+    }
+
+    public function clinic()
+    {
+        return $this->belongsTo(Clinic::class, 'clinic_id', 'clinic_id');
+    }
+
 }

@@ -16,14 +16,15 @@ use \App\Http\Controllers\ProfileController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('profile.index');
 });
 
-Route::get('endpoint',[\App\Http\API\UserController::class, 'getDoctors']);
+Route::get('endpoint',[\App\Http\API\UserController::class, 'getAppointments']);
 
 Route::middleware('profile')->group(function () {
 
 Route::get('login', [CustomLoginController::class, 'index'])->name('login');
+Route::get('make-appointment', [CustomLoginController::class, 'index'])->name('login');
 Route::post('profile-login', [CustomLoginController::class, 'login'])->name('login.post');
 Route::post('logout', [CustomLoginController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function() {
@@ -36,7 +37,7 @@ Route::middleware('auth')->group(function() {
             Route::get('profile', 'profile')->name('index');
             Route::get('payments', 'payments')->name('payment');
             Route::get('analyzes', 'analyzes')->name('analyzes');
-            Route::get('records', 'records')->name('records');
+            Route::get('appointments', 'records')->name('records');
             Route::get('services', 'services')->name('services');
         });
 });

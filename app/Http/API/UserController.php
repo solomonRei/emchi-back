@@ -3,8 +3,10 @@
 namespace App\Http\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Clinic;
 use App\Models\Doctor;
 use App\Models\Payments;
+use App\Models\Record;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +21,33 @@ class UserController extends Controller
     {
         $this->user = Auth::user();
         $this->API = new RequestController();
+    }
+
+    public function getClinics()
+    {
+        $response = $this->API->sendResponse([
+            'limit' => 100,
+            'offset' => 0,
+        ], 'clinics', 'GET');
+
+        if ($response['status'] === 200 && $response['type'] === 'success') {
+            foreach ($response['response']['data'] as $clinic) {
+                $update_status = Clinic::updateOrCreate(
+                    ['clinic_id' => $clinic['id']],
+                    [
+                        'title' => $clinic['title'],
+                        'legal_name' => $clinic['legalName'],
+                        'address_country' => $clinic['address']['country'],
+                        'address_region' => $clinic['address']['region'],
+                        'address_area' => $clinic['address']['area'],
+                        'address_city' => $clinic['address']['city'],
+                        'address_street' => $clinic['address']['street'],
+                        'address_house' => $clinic['address']['house'],
+                        'address_flat' => $clinic['address']['flat'],
+                    ]
+                );
+            }
+        }
     }
 
     public function getDoctors()
@@ -104,6 +133,40 @@ class UserController extends Controller
                             'orderPaidStatus' => $payment['orderPaidStatus'],
                             'sum' => $payment['sum'],
                             'finalSum' => $payment['finalSum'],
+                        ]
+                    );
+                }
+            }
+
+        }
+    }
+
+    public function getAppointments()
+    {
+        $this->user = Auth::user();
+        if ($this->user->user_id !== 0 && $this->user !== NULL) {
+            $response = $this->API->sendResponse([
+                'clientId' => $this->user->user_id,
+                'limit' => 100,
+                'offset' => 0,
+            ], 'appointments', 'GET');
+
+            if ($response['status'] === 200 && $response['type'] === 'success') {
+                foreach ($response['response']['data'] as $appointment) {
+                    $update_status = Record::updateOrCreate(
+                        ['record_id' => $appointment['id']],
+                        [
+                            'user_id' => $this->user->user_id,
+                            'clinic_id' => $appointment['clinicId'],
+                            'order_id' => $appointment['orderId'],
+                            'doctor_id' => $appointment['userId'],
+                            'status' => $appointment['status'],
+                            'call_confirmation_status' => $appointment['callConfirmationStatus'],
+                            'date' => $appointment['date'],
+                            'time' => $appointment['time'],
+                            'duration' => (int) $appointment['duration'],
+                            'note' => $appointment['note'],
+                            'appointment_type' => $appointment['appointmentType']['title']
                         ]
                     );
                 }

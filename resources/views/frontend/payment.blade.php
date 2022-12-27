@@ -16,7 +16,7 @@
             <div class="grid grow auto-cols-fr grid-flow-col gap-2 sm:gap-4">
                 <a
                     href="{{ route('profile.payment', ['type' => 'prepaid']) }}"
-                    class="@if(@$_GET['type'] !== 'waiting') active @endif @endifflex min-h-11 grow items-center justify-center rounded bg-white py-2 px-4 text-center transition hover:bg-primary-50 [&amp;.active]:bg-primary-500 [&amp;.active]:text-white"
+                    class="@if(@$_GET['type'] !== 'waiting') active @endif flex min-h-11 grow items-center justify-center rounded bg-white py-2 px-4 text-center transition hover:bg-primary-50 [&amp;.active]:bg-primary-500 [&amp;.active]:text-white"
                 >Оплаченные</a
                 ><a
                     href="{{ route('profile.payment', ['type' => 'waiting']) }}"
