@@ -1,0 +1,37 @@
+created:
+    - database/factories/UserFactory.php
+    - database/factories/NotificationFactory.php
+    - database/factories/RecordFactory.php
+    - database/factories/DoctorFactory.php
+    - database/factories/ServiceFactory.php
+    - database/factories/PaymentsFactory.php
+    - database/factories/AnalysisFactory.php
+    - database/migrations/2022_12_09_062614_create_users_table.php
+    - database/migrations/2022_12_09_062615_create_notifications_table.php
+    - database/migrations/2022_12_09_062616_create_records_table.php
+    - database/migrations/2022_12_09_062617_create_doctors_table.php
+    - database/migrations/2022_12_09_062618_create_services_table.php
+    - database/migrations/2022_12_09_062619_create_payments_table.php
+    - database/migrations/2022_12_09_062620_create_analyses_table.php
+    - app/Models/User.php
+    - app/Models/Notification.php
+    - app/Models/Record.php
+    - app/Models/Doctor.php
+    - app/Models/Service.php
+    - app/Models/Payments.php
+    - app/Models/Analysis.php
+    - database/seeders/UserSeeder.php
+    - database/seeders/NotificationSeeder.php
+    - database/seeders/RecordSeeder.php
+    - database/seeders/DoctorSeeder.php
+    - database/seeders/ServiceSeeder.php
+    - database/seeders/PaymentsSeeder.php
+    - database/seeders/AnalysisSeeder.php
+models:
+    User: { id: autoIncrement, name: string, login: 'string unique', password: string, dateBirth: string, phone: string, idPolis: 'integer unsigned nullable', inn: 'integer unsigned nullable', snils: 'integer unsigned nullable', workplace: string, remember_token: string, timestamps: timestamps, relationships: { hasMany: 'Notification, Records, Service, Analysis, Payments' } }
+    Notification: { id: autoIncrement, name: 'string nullable', status: 'enum:1,0', timestamps: timestamps, softdeletes: softDeletes }
+    Record: { id: autoIncrement, name: string, phone: 'string nullable', doctor: string, status: 'enum:1,0,2', date: time, requirements: 'string nullable', location: 'string nullable', timestamps: timestamps, softdeletes: softDeletes, relationships: { belongsTo: Doctors } }
+    Doctor: { name: string, phone: 'string nullable', location: 'string nullable', timestamps: timestamps }
+    Service: { name: string, price: 'double unsigned', date: time, description: 'text nullable', testimony: 'text nullable', restriction: 'text nullable', result: 'text nullable', relationships: { hasMany: Analysis } }
+    Payments: { name: string, date: string, amount: double, status: 'enum:0,1', timestamps: timestamps }
+    Analysis: { name: string, date: string, doctor: string, location: string, payment: string, result: text }
