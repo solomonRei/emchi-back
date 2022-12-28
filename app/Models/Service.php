@@ -35,7 +35,8 @@ class Service extends Model
         'description',
         'testimony',
         'restriction',
-        'result'
+        'result',
+        'notification_id'
     ];
 
     /**

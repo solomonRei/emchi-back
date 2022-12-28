@@ -155,7 +155,7 @@
                                 <a
                                     data-hk="0-0-0-0-1-11-5-0-0-3-6-0-0"
                                     class="button relative inline-flex cursor-pointer items-center justify-center text-center align-middle transition text-primary-500 hover:bg-primary-500 hover:text-white border border-primary-500 active:bg-primary-600 active:text-white active:border-primary-600 min-h-[45px] py-1 px-5 text-base rounded"
-                                    href="#"
+                                    href="{{ route('profile.get-pdf', ['id' => $analyze->service_id]) }}"
                                 >Скачать результат</a
                                 >
                             </div>

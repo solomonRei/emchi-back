@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,7 +29,8 @@ class Record extends Model
         'date',
         'time',
         'duration',
-        'note'
+        'note',
+        'notification_id'
     ];
 
     private function rdate($param, $time = 0)
@@ -49,6 +51,13 @@ class Record extends Model
         return Attribute::make(
             get: fn ($value) => $this->rdate('d M Y', strtotime($this->date))
         );
+    }
+
+    public function checkToday()
+    {
+        $date = Carbon::parse($this->date);
+        return $date->isToday() ? 1 : 0;
+
     }
 
     public function doctor()

@@ -4,6 +4,7 @@
     >
         Личный кабинет
     </h1>
+
     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="mt-2 flex items-center gap-2 transition hover:text-primary-400"
     >Выйти
         <svg viewBox="0 0 20 18" class="w-5 shrink-0 fill-current">

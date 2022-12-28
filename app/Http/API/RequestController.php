@@ -67,7 +67,38 @@ class RequestController extends Controller
 
     }
 
-    private function setHeader(string $key, string $value): void
+    public function sendReponseClear(array $data, string $action, string $method)
+    {
+        $data_build = http_build_query($data);
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
+
+        if ($method === 'POST') {
+            curl_setopt($ch, CURLOPT_URL, env("API_URL").$action);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_POST,  1);
+        }else {
+            curl_setopt($ch, CURLOPT_URL, env("API_URL").$action."?".$data_build);
+            curl_setopt($ch, CURLOPT_POST,  0);
+        }
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        try {
+            $data = curl_exec($ch);
+            curl_close($ch);
+            dd($data);
+
+        }catch (\JsonException $e) {
+            return [
+                'status' => 403,
+                'type' => 'error'
+            ];
+        }
+    }
+
+    public function setHeader(string $key, string $value): void
     {
         $this->headers[] = "$key: $value";
     }

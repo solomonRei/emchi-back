@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Traits\MetaTags;
+use App\Models\Notification;
 use App\Models\Payments;
 use App\Models\Record;
 use App\Models\Service;
@@ -10,10 +11,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\API\UserController;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
     use MetaTags;
+
 
     public function profile()
     {
@@ -43,6 +46,8 @@ class ProfileController extends Controller
             ->whereNot('kind', 'analysis')
             ->orderBy('date', $order)
             ->paginate(10);
+
+        Notification::where('type', 'service')->where('user_id', $user->id)->update(['status' => 1]);
 
         return view('frontend.services', compact('user', 'my_services'));
 
@@ -82,6 +87,8 @@ class ProfileController extends Controller
 
         }
 
+        Notification::where('type', 'payment')->where('user_id', $user->id)->update(['status' => 1]);
+
 //        dd($payments);
 
 //        $userController = new UserController();
@@ -89,6 +96,12 @@ class ProfileController extends Controller
 
         return view('frontend.payment', compact('user', 'payments'));
 
+    }
+
+    public function getPDF($id)
+    {
+        $userController = new UserController();
+        $userController->getPDF($id);
     }
 
     public function analyzes(Request $request)
@@ -110,6 +123,10 @@ class ProfileController extends Controller
             ->where('kind', 'analysis')
             ->orderBy('date', $order)
             ->paginate(10);
+
+        Notification::whereHas('services', function ($q) {
+            $q->where('kind', 'analysis')->where('status', 'ready');
+        })->where('type', 'analysis')->where('user_id', $user->id)->update(['status' => 1]);
 
 
         return view('frontend.analyzes', compact('user', 'analyzes'));
@@ -140,7 +157,14 @@ class ProfileController extends Controller
 
         }
 
+        Notification::whereHas('records', function ($q) {
+            $q->whereDate('date', '<', date('Y-m-d'));
+        })->where('type', 'record')->where('user_id', $user->id)->update(['status' => 1]);
 
-        return view('frontend.records', compact('user', 'appointments'));
+        $notifications = Notification::whereHas('records', function ($q) {
+            $q->whereDate('date', '=', date('Y-m-d'));
+        })->get();
+
+        return view('frontend.records', compact('user', 'appointments', 'notifications'));
     }
 }

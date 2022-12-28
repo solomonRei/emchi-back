@@ -17,6 +17,18 @@ class Notification extends Model
      */
     protected $fillable = [
         'name',
+        'type',
         'status',
+        'user_id'
     ];
+
+    public function records()
+    {
+        return $this->hasOne(Record::class, 'notification_id', 'id');
+    }
+    public function services()
+    {
+        return $this->hasOne(Service::class, 'notification_id', 'id');
+    }
+
 }

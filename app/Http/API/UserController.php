@@ -5,12 +5,15 @@ namespace App\Http\API;
 use App\Http\Controllers\Controller;
 use App\Models\Clinic;
 use App\Models\Doctor;
+use App\Models\Notification;
 use App\Models\Payments;
 use App\Models\Record;
 use App\Models\Service;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\API\RequestController;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -71,7 +74,27 @@ class UserController extends Controller
                     ]
                 );
             }
-            echo $update_status->count();
+        }
+    }
+
+    public function getPDF($service_id)
+    {
+        if ($this->user->user_id !== 0 && $this->user !== NULL) {
+            $validator = Validator::make([
+                'service_id' => $service_id
+            ], [
+                'service_id' => 'required|exists:services,service_id',
+            ], [
+                'service_id.required' => 'ID услуги явялется обязательным'
+            ]);
+
+            if ($validator->fails()) {
+                return back("404")->withErrors(['message' => 'Not Found']);
+            }
+
+            $this->API->setHeader('Accept-Encoding', 'gzip');
+            $response = $this->API->sendReponseClear([], 'entries/'.$service_id.'/pdf', 'GET');
+
         }
     }
 
@@ -106,6 +129,21 @@ class UserController extends Controller
                             'parentEntryId' => $service['parentEntryId'],
                         ]
                     );
+
+                    // If service complex is ready
+                    if ($service['state'] === 'ready') {
+                        $notification = Notification::updateOrCreate(
+                            ['id' => $update_status->notification_id],
+                            [
+                                'user_id' => $this->user->id,
+                                'name' => 'service',
+                                'type' => $service['kind'] === 'analysis' ? 'analysis' : 'service'
+                            ]
+                        );
+
+                        $update_status->notification_id = $notification->id;
+                        $update_status->save();
+                    }
                 }
             }
         }
@@ -127,7 +165,7 @@ class UserController extends Controller
                         [
                             'user_id' => $this->user->user_id,
                             'customerId' => $payment['customerId'],
-                            'clinicId' => $payment['clinicId'],
+                            'clinic_id' => $payment['clinicId'],
                             'customerType' => $payment['customerType'],
                             'date' => $payment['date'],
                             'orderPaidStatus' => $payment['orderPaidStatus'],
@@ -135,6 +173,19 @@ class UserController extends Controller
                             'finalSum' => $payment['finalSum'],
                         ]
                     );
+
+                    $notification = Notification::updateOrCreate(
+                        ['id' => $update_status->notification_id],
+                        [
+                            'user_id' => $this->user->id,
+                            'name' => 'payment',
+                            'type' => 'payment'
+                        ]
+                    );
+
+                    $update_status->notification_id = $notification->id;
+                    $update_status->save();
+
                 }
             }
 
@@ -169,6 +220,18 @@ class UserController extends Controller
                             'appointment_type' => $appointment['appointmentType']['title']
                         ]
                     );
+
+                    $notification = Notification::updateOrCreate(
+                        ['id' => $update_status->notification_id],
+                        [
+                            'user_id' => $this->user->id,
+                            'name' => 'Запись '.$appointment['date'].', в '.$appointment['time'],
+                            'type' => 'record'
+                        ]
+                    );
+
+                    $update_status->notification_id = $notification->id;
+                    $update_status->save();
                 }
             }
 

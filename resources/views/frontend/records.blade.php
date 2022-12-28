@@ -11,6 +11,7 @@
             >
                 Мои записи
             </h2>
+           @if($notifications->count() > 0)
             <div
                 class="-mt-2 flex w-full items-center rounded bg-success-500 py-4 px-6 text-white sm:max-w-[370px]"
             >
@@ -18,8 +19,9 @@
                     <path
                         d="M14 14V9c0-3.07-1.63-5.64-4.5-6.32V2a1.5 1.5 0 1 0-3 0v.68C3.64 3.36 2 5.92 2 9v5l-2 2v1h16v-1l-2-2Zm-2 1H4V9c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6Zm-4 5a2 2 0 0 0 2-2H6c0 1.1.9 2 2 2Z"
                     ></path></svg
-                >Сегодня у вас одна запись к врачу 14.11.2022, в 10:30
+                >Сегодня у вас {{ $notifications->count() }} записи в клинике
             </div>
+               @endif
         </div>
         <div class="mb-8 flex flex-wrap items-center gap-x-6 gap-y-5 sm:flex-nowrap">
             <div class="grid grow auto-cols-fr grid-flow-col gap-2 sm:gap-4">
@@ -61,16 +63,14 @@
         </div>
         <div class="grid gap-7">
             @foreach($appointments as $appointment)
-                <article
-                    class="record relative grid overflow-hidden rounded-lg border border-transparent shadow-shifted sm:grid-cols-2 [&.active]:border-success-500 [&.active]:pt-11 sm:[&.active]:!pt-0 active"
+                <article class=" @if($appointment->checkToday()) active @endif record relative grid overflow-hidden rounded-lg border border-transparent shadow-shifted sm:grid-cols-2 [&.active]:border-success-500 [&.active]:pt-11 sm:[&.active]:!pt-0"
                 >
                     <div
                         class="absolute inset-x-0 top-0 hidden h-11 bg-success-500 text-white sm:inset-y-0 sm:left-0 sm:h-auto sm:w-11 [.active_&amp;]:block"
                     >
-                        <span
-                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:-rotate-90"
-                        >Сегодня</span
-                        >
+                        @if($appointment->checkToday())
+                            <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:-rotate-90">Сегодня</span>
+                        @endif
                     </div>
                     <div class="grid gap-6 py-5 px-5 sm:pl-16">
                         <span class="flex items-center gap-5"

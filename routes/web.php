@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function() {
             Route::get('analyzes', 'analyzes')->name('analyzes');
             Route::get('appointments', 'records')->name('records');
             Route::get('services', 'services')->name('services');
+            Route::get('downloadPDF/{id}', 'getPDF')->name('get-pdf');
         });
 });
 

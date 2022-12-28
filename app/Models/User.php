@@ -61,19 +61,30 @@ class User extends Authenticatable
         );
     }
 
+    public function getNotifications($type, $status = 0)
+    {
+        return $this->notifications->where('status', $status)->where('type', $type);
+    }
+
+    public function getNotificationsAllCount($status = 0)
+    {
+        return $this->notifications->where('status', $status)->count();
+    }
+
+
     public function notifications()
     {
-        return $this->hasMany(Notification::class);
+        return $this->hasMany(Notification::class, 'user_id', 'id');
     }
 
     public function records()
     {
-        return $this->hasMany(Records::class);
+        return $this->hasMany(Records::class, 'user_id', 'user_id');
     }
 
     public function services()
     {
-        return $this->hasMany(Service::class);
+        return $this->hasMany(Service::class, 'user_id', 'user_id');
     }
 
     public function analyses()
@@ -83,6 +94,6 @@ class User extends Authenticatable
 
     public function payments()
     {
-        return $this->hasMany(Payments::class);
+        return $this->hasMany(Payments::class, 'user_id', 'user_id');
     }
 }

@@ -21,12 +21,13 @@ class Payments extends Model
         'order_id',
         'customerId',
         'user_id',
+        'notification_id',
         'customerType',
         'sum',
         'date',
         'finalSum',
         'orderPaidStatus',
-        'clinicId'
+        'clinic_id'
     ];
 
     /**
@@ -36,7 +37,7 @@ class Payments extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'clinicId' => 'integer',
+        'clinic_id' => 'integer',
         'order_id' => 'integer',
         'user_id' => 'integer',
         'customerId' => 'integer',
