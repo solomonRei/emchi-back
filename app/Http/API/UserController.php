@@ -89,7 +89,7 @@ class UserController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return back("404")->withErrors(['message' => 'Not Found']);
+                return back()->withErrors(['message' => 'Not Found']);
             }
 
             $this->API->setHeader('Accept-Encoding', 'gzip');

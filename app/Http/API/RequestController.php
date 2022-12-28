@@ -84,9 +84,17 @@ class RequestController extends Controller
             curl_setopt($ch, CURLOPT_POST,  0);
         }
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $out = fopen(storage_path("app/private/")."test.zip", 'wb');
+        if ($out == FALSE){
+            print "File not opened<br>";
+            exit;
+        }
+
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FILE, $out);
         try {
             $data = curl_exec($ch);
+            echo "<br>Error is : ".curl_error ( $ch);
             curl_close($ch);
             dd($data);
 
