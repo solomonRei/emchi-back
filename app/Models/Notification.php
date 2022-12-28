@@ -26,6 +26,7 @@ class Notification extends Model
     {
         return $this->hasOne(Record::class, 'notification_id', 'id');
     }
+
     public function services()
     {
         return $this->hasOne(Service::class, 'notification_id', 'id');

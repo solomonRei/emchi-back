@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Traits;
 
 use Butschster\Head\Facades\Meta;
@@ -7,7 +8,8 @@ use Butschster\Head\Facades\Meta;
  * Trait MetaTags
  * @package App\Http\Traits
  */
-trait MetaTags {
+trait MetaTags
+{
 
     /**
      * @param $title

@@ -11,6 +11,7 @@ class RequestController extends Controller
 {
     private array $headers = [];
     private string $token;
+
 //    private const API_URL = "http://192.168.133.21:32000/api/v2/";
 
     public function __construct()
@@ -32,12 +33,12 @@ class RequestController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
 
         if ($method === 'POST') {
-            curl_setopt($ch, CURLOPT_URL, env("API_URL").$action);
+            curl_setopt($ch, CURLOPT_URL, env("API_URL") . $action);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($ch, CURLOPT_POST,  1);
-        }else {
-            curl_setopt($ch, CURLOPT_URL, env("API_URL").$action."?".$data_build);
-            curl_setopt($ch, CURLOPT_POST,  0);
+            curl_setopt($ch, CURLOPT_POST, 1);
+        } else {
+            curl_setopt($ch, CURLOPT_URL, env("API_URL") . $action . "?" . $data_build);
+            curl_setopt($ch, CURLOPT_POST, 0);
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -58,7 +59,7 @@ class RequestController extends Controller
                 'type' => 'error',
                 'response' => $data,
             ];
-        }catch (\JsonException $e) {
+        } catch (\JsonException $e) {
             return [
                 'status' => 403,
                 'type' => 'error'
@@ -76,16 +77,16 @@ class RequestController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
 
         if ($method === 'POST') {
-            curl_setopt($ch, CURLOPT_URL, env("API_URL").$action);
+            curl_setopt($ch, CURLOPT_URL, env("API_URL") . $action);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($ch, CURLOPT_POST,  1);
-        }else {
-            curl_setopt($ch, CURLOPT_URL, env("API_URL").$action."?".$data_build);
-            curl_setopt($ch, CURLOPT_POST,  0);
+            curl_setopt($ch, CURLOPT_POST, 1);
+        } else {
+            curl_setopt($ch, CURLOPT_URL, env("API_URL") . $action . "?" . $data_build);
+            curl_setopt($ch, CURLOPT_POST, 0);
         }
 
-        $out = fopen(storage_path("app/private/")."test.zip", 'wb');
-        if ($out == FALSE){
+        $out = fopen(storage_path("app/private/") . "test.zip", 'wb');
+        if ($out == FALSE) {
             print "File not opened<br>";
             exit;
         }
@@ -94,11 +95,11 @@ class RequestController extends Controller
         curl_setopt($ch, CURLOPT_FILE, $out);
         try {
             $data = curl_exec($ch);
-            echo "<br>Error is : ".curl_error ( $ch);
+            echo "<br>Error is : " . curl_error($ch);
             curl_close($ch);
             dd($data);
 
-        }catch (\JsonException $e) {
+        } catch (\JsonException $e) {
             return [
                 'status' => 403,
                 'type' => 'error'

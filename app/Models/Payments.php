@@ -61,7 +61,7 @@ class Payments extends Model
     protected function dateNormal(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $this->rdate('d M Y', strtotime($this->date))
+            get: fn($value) => $this->rdate('d M Y', strtotime($this->date))
         );
     }
 

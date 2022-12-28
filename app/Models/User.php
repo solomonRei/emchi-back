@@ -52,12 +52,12 @@ class User extends Authenticatable
     // Form FIO format
     protected function fio(): Attribute
     {
-        $surname = isset($this->surname[0]) ? mb_substr($this->surname, 0, 1)."." : '';
-        $secondName = isset($this->secondName[0]) ? mb_substr($this->secondName, 0, 1)."." : '';
-        $fio = $this->name." ".$surname.$secondName;
+        $surname = isset($this->surname[0]) ? mb_substr($this->surname, 0, 1) . "." : '';
+        $secondName = isset($this->secondName[0]) ? mb_substr($this->secondName, 0, 1) . "." : '';
+        $fio = $this->name . " " . $surname . $secondName;
 
         return Attribute::make(
-            get: fn ($value) => $fio
+            get: fn($value) => $fio
         );
     }
 

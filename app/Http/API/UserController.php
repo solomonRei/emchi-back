@@ -93,7 +93,7 @@ class UserController extends Controller
             }
 
             $this->API->setHeader('Accept-Encoding', 'gzip');
-            $response = $this->API->sendReponseClear([], 'entries/'.$service_id.'/pdf', 'GET');
+            $response = $this->API->sendReponseClear([], 'entries/' . $service_id . '/pdf', 'GET');
 
         }
     }
@@ -215,7 +215,7 @@ class UserController extends Controller
                             'call_confirmation_status' => $appointment['callConfirmationStatus'],
                             'date' => $appointment['date'],
                             'time' => $appointment['time'],
-                            'duration' => (int) $appointment['duration'],
+                            'duration' => (int)$appointment['duration'],
                             'note' => $appointment['note'],
                             'appointment_type' => $appointment['appointmentType']['title']
                         ]
@@ -225,7 +225,7 @@ class UserController extends Controller
                         ['id' => $update_status->notification_id],
                         [
                             'user_id' => $this->user->id,
-                            'name' => 'Запись '.$appointment['date'].', в '.$appointment['time'],
+                            'name' => 'Запись ' . $appointment['date'] . ', в ' . $appointment['time'],
                             'type' => 'record'
                         ]
                     );

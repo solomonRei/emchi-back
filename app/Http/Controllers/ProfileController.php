@@ -37,8 +37,7 @@ class ProfileController extends Controller
 //        $userController->getServices();
         if ($request->date === NULL || $request->date === 'latest') {
             $order = 'DESC';
-        }
-        else {
+        } else {
             $order = 'ASC';
         }
 
@@ -61,13 +60,12 @@ class ProfileController extends Controller
 
         if ($request->date === NULL || $request->date === 'latest') {
             $order = 'DESC';
-        }
-        else {
+        } else {
             $order = 'ASC';
         }
 
         if ($request->type === 'waiting' && $request->type !== NULL) {
-            $payments = Payments::with(['service' => function($q) use($user) {
+            $payments = Payments::with(['service' => function ($q) use ($user) {
                 $q->where('user_id', $user->user_id);
             }])
                 ->where('user_id', $user->user_id)
@@ -75,8 +73,8 @@ class ProfileController extends Controller
                 ->whereNot('orderPaidStatus', 'paid_by_credit')
                 ->orderBy('date', $order)
                 ->paginate(10);
-        }else {
-            $payments = Payments::with(['service' => function($q) use($user) {
+        } else {
+            $payments = Payments::with(['service' => function ($q) use ($user) {
                 $q->where('user_id', $user->user_id);
             }])
                 ->where('user_id', $user->user_id)
@@ -114,8 +112,7 @@ class ProfileController extends Controller
 //        $userController->getServices();
         if ($request->date === NULL || $request->date === 'latest') {
             $order = 'DESC';
-        }
-        else {
+        } else {
             $order = 'ASC';
         }
 
@@ -140,8 +137,7 @@ class ProfileController extends Controller
 
         if ($request->date === NULL || $request->date === 'latest') {
             $order = 'DESC';
-        }
-        else {
+        } else {
             $order = 'ASC';
         }
 
@@ -150,7 +146,7 @@ class ProfileController extends Controller
                 ->where('status', 'canceled')
                 ->orderBy('date', $order)
                 ->paginate(10);
-        }else {
+        } else {
             $appointments = Record::where('user_id', $user->user_id)
                 ->orderBy('date', $order)
                 ->paginate(10);

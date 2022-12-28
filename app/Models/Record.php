@@ -49,15 +49,14 @@ class Record extends Model
     protected function dateNormal(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $this->rdate('d M Y', strtotime($this->date))
+            get: fn($value) => $this->rdate('d M Y', strtotime($this->date))
         );
     }
 
-    public function checkToday()
+    public function checkToday(): int
     {
         $date = Carbon::parse($this->date);
         return $date->isToday() ? 1 : 0;
-
     }
 
     public function doctor()

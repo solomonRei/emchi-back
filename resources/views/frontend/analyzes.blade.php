@@ -11,15 +11,6 @@
             >
                 Результаты анализов
             </h2>
-            <div
-                class="-mt-2 flex w-full items-center rounded bg-success-500 py-4 px-6 text-white sm:max-w-[370px]"
-            >
-                <svg viewBox="0 0 16 20" class="mr-3.5 w-4 shrink-0 fill-current">
-                    <path
-                        d="M14 14V9c0-3.07-1.63-5.64-4.5-6.32V2a1.5 1.5 0 1 0-3 0v.68C3.64 3.36 2 5.92 2 9v5l-2 2v1h16v-1l-2-2Zm-2 1H4V9c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6Zm-4 5a2 2 0 0 0 2-2H6c0 1.1.9 2 2 2Z"
-                    ></path></svg
-                >Сегодня у вас готов один результат анализов
-            </div>
         </div>
         <div class="mb-8 flex flex-wrap items-center gap-x-6 gap-y-5 sm:flex-nowrap">
             <div class="w-full grow sm:min-w-80">

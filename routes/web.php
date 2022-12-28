@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\API\UserController;
 use Illuminate\Support\Facades\Route;
 
 use \App\Http\Controllers\Auth\CustomLoginController;
@@ -19,7 +20,7 @@ Route::get('/', function () {
     return redirect()->route('profile.index');
 });
 
-Route::get('endpoint',[\App\Http\API\UserController::class, 'getAppointments']);
+Route::get('endpoint',[UserController::class, 'getAppointments']);
 
 Route::middleware('profile')->group(function () {
 

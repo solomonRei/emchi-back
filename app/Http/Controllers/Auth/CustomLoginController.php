@@ -48,7 +48,7 @@ class CustomLoginController extends Controller
         if (Auth::attempt($credentials)) {
             // update new User with data and user_ID
             $userController = new UserController();
-            if(!$userController->updateUser()) {
+            if (!$userController->updateUser()) {
                 Session::flush();
                 Auth::logout();
 
@@ -73,7 +73,8 @@ class CustomLoginController extends Controller
         return redirect("login")->withErrors(['login' => 'Логин или пароль неверны']);
     }
 
-    public function logout() {
+    public function logout()
+    {
         Session::flush();
         Auth::logout();
 
