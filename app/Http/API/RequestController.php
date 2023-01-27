@@ -6,6 +6,7 @@ use App\Http\API\JWTController;
 use App\Http\Controllers\Controller;
 use http\Client\Request;
 use Nette\Utils\JsonException;
+use ZipArchive;
 
 class RequestController extends Controller
 {
@@ -46,7 +47,7 @@ class RequestController extends Controller
             $data = json_decode(curl_exec($ch), true);
             curl_close($ch);
 
-            if (isset($data['data']) && count($data['data']) > 0) {
+            if ((isset($data['data']) && count($data['data']) > 0)) {
                 return [
                     'status' => 200,
                     'type' => 'success',
@@ -85,19 +86,35 @@ class RequestController extends Controller
             curl_setopt($ch, CURLOPT_POST, 0);
         }
 
-        $out = fopen(storage_path("app/private/") . "test.zip", 'wb');
-        if ($out == FALSE) {
+        $filename = time().random_int(1, 1567).".zip";
+        $out = fopen(storage_path("app/private/") . $filename, 'wb');
+        if ($out === FALSE) {
             print "File not opened<br>";
             exit;
         }
 
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FILE, $out);
         try {
             $data = curl_exec($ch);
-            echo "<br>Error is : " . curl_error($ch);
+//            echo "<br>Error is : " . curl_error($ch);
             curl_close($ch);
-            dd($data);
+            fclose($out);
+
+            echo "File $filename is downloading...";
+
+            // unzip
+//            $zip = new ZipArchive;
+//            $res = $zip->open($filename);
+//            if ($res === TRUE) {
+//                $zip->extractTo(storage_path("app/private/")); // directory to extract contents to
+//                $zip->close();
+//                echo ' wordpress.zip extracted; ';
+//                unlink($filename);
+//                echo ' wordpress.zip deleted; ';
+//            }
+                sleep(10);
+//                return response()->download(storage_path("app/private/").$filename);
+                return redirect()->route('profile.download-file', ['filename' => $filename]);
 
         } catch (\JsonException $e) {
             return [

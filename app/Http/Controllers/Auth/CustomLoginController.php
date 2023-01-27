@@ -57,6 +57,7 @@ class CustomLoginController extends Controller
 
             $userController->getClinics();
             $userController->getDoctors();
+            $userController->getAllServices();
             $userController->getServices();
             $userController->getPayments();
             $userController->getAppointments();

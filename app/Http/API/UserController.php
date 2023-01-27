@@ -9,6 +9,7 @@ use App\Models\Notification;
 use App\Models\Payments;
 use App\Models\Record;
 use App\Models\Service;
+use App\Models\ServiceAll;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,23 @@ class UserController extends Controller
     {
         $this->user = Auth::user();
         $this->API = new RequestController();
+    }
+
+    public function getUsers2()
+    {
+//        $response = $this->API->sendResponse([
+//            'limit' => 100,
+//            'offset' => 0,
+//            'state' => 'ready',
+//        ], 'entries', 'GET');
+        return response()->download(storage_path("app/private/")."16748399981391.zip");
+//        $response = $this->API->sendResponse([
+//            'limit' => 100,
+//            'offset' => 0,
+//        ], 'entries/1/pdf', 'GET');
+
+        dd($response);
+
     }
 
     public function getClinics()
@@ -77,24 +95,49 @@ class UserController extends Controller
         }
     }
 
+    public function getAllServices()
+    {
+        if ($this->user->user_id !== 0 && $this->user !== NULL) {
+            $response = $this->API->sendResponse([
+                'limit' => 100,
+                'offset' => 0,
+            ], 'entry_types', 'GET');
+
+            if ($response['status'] === 200 && $response['type'] === 'success') {
+                foreach ($response['response']['data'] as $service) {
+                    $update_status = ServiceAll::updateOrCreate(
+                        ['services_all_id' => $service['id']],
+                        [
+                            'title' => $service['title'],
+                            'category_id' => $service['categoryId'],
+                            'price' => $service['price'],
+                            'clinics_id' => json_encode($service['clinicIds']),
+                        ]
+                    );
+                }
+            }
+        }
+    }
+
     public function getPDF($service_id)
     {
         if ($this->user->user_id !== 0 && $this->user !== NULL) {
             $validator = Validator::make([
                 'service_id' => $service_id
             ], [
-                'service_id' => 'required|exists:services,service_id',
+                'service_id' => 'required|exists:services,token_pdf',
             ], [
-                'service_id.required' => 'ID услуги явялется обязательным'
+                'service_id.required' => 'ID услуги является обязательным'
             ]);
 
             if ($validator->fails()) {
-                return back()->withErrors(['message' => 'Not Found']);
+//                return redirect('404');
+                return redirect()->back()->withErrors("File not found.");
             }
 
-            $this->API->setHeader('Accept-Encoding', 'gzip');
-            $response = $this->API->sendReponseClear([], 'entries/' . $service_id . '/pdf', 'GET');
-
+            $service = Service::where('token_pdf', $service_id)->first();
+                $this->API->setHeader('Accept-Encoding', 'gzip');
+            return $this->API->sendReponseClear([], 'entries/' . $service['service_id'] . '/pdf', 'GET');
         }
     }
 
@@ -113,7 +156,7 @@ class UserController extends Controller
                         ['service_id' => $service['id']],
                         [
                             'user_id' => $this->user->user_id,
-                            'name' => $service['title'],
+                            'title' => $service['title'],
                             'number' => $service['number'],
                             'price' => $service['price'],
                             'date' => $service['date'],
@@ -127,6 +170,7 @@ class UserController extends Controller
                             'amount' => $service['amount'],
                             'doctor_id' => $service['userId'],
                             'parentEntryId' => $service['parentEntryId'],
+                            'token_pdf' => hash('sha256', time().$service['title'].$service['orderId'])
                         ]
                     );
 

@@ -17,7 +17,7 @@ class Service extends Model
      */
     protected $fillable = [
         'service_id',
-        'name',
+        'title',
         'number',
         'user_id',
         'order_id',
@@ -36,7 +36,8 @@ class Service extends Model
         'testimony',
         'restriction',
         'result',
-        'notification_id'
+        'notification_id',
+        'token_pdf'
     ];
 
     /**

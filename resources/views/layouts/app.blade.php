@@ -23,6 +23,7 @@
 
     @yield('header-scripts')
     @yield('header-css')
+    @livewireStyles
 
 </head>
 <body>
@@ -47,6 +48,6 @@
         @include('layouts.partials.footer')
     </div>
 </div>
-
+@livewireScripts
 @yield('footer-scripts')
 </body>

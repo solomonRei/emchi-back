@@ -99,7 +99,16 @@ class ProfileController extends Controller
     public function getPDF($id)
     {
         $userController = new UserController();
-        $userController->getPDF($id);
+        return $userController->getPDF($id);
+    }
+
+    public function downloadFile($filename)
+    {
+        if (file_exists(storage_path("app/private/").$filename)) {
+            return response()->download(storage_path("app/private/").$filename);
+        } else {
+            return redirect()->back()->withErrors("File not found.");
+        }
     }
 
     public function analyzes(Request $request)
@@ -117,7 +126,7 @@ class ProfileController extends Controller
         }
 
         $analyzes = Service::where('user_id', $user->user_id)
-            ->where('kind', 'analysis')
+//            ->where('kind', 'analysis')
             ->orderBy('date', $order)
             ->paginate(10);
 
