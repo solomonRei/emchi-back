@@ -168,15 +168,17 @@
                                 class="absolute inset-x-0 bottom-0 mb-[-3px] hidden h-[5px] rounded-full bg-primary-500 [.active>&amp;]:block"
                             ></span></button
                         >
-                        <button
-                            type="button"
-                            role="tab"
-                            class="relative min-w-min max-w-40 border-b border-primary-500 py-3 px-4 text-center text-primary-500/50 transition hover:text-primary-500 sm:max-w-none sm:grow [&amp;.active]:text-primary-500"
-                        >
-                            Результат<span
-                                class="absolute inset-x-0 bottom-0 mb-[-3px] hidden h-[5px] rounded-full bg-primary-500 [.active>&amp;]:block"
-                            ></span>
-                        </button>
+                        @if(!$services_status && $service->status === 'ready')
+                            <button
+                                type="button"
+                                role="tab"
+                                class="relative min-w-min max-w-40 border-b border-primary-500 py-3 px-4 text-center text-primary-500/50 transition hover:text-primary-500 sm:max-w-none sm:grow [&amp;.active]:text-primary-500"
+                            >
+                                Результат<span
+                                    class="absolute inset-x-0 bottom-0 mb-[-3px] hidden h-[5px] rounded-full bg-primary-500 [.active>&amp;]:block"
+                                ></span>
+                            </button>
+                        @endif
                     </div>
                     <div class="[&amp;_p]:font-light [&amp;_p:not(:last-of-type)]:mb-4">
                         <div role="tabpanel" class="px-5 pt-5 pb-6">
@@ -302,19 +304,22 @@
                                 </button>
                             </div>
                         </div>
-                        <div role="tabpanel" class="hidden px-5 pt-5 pb-6">
+                        @if(!$services_status && $service->status === 'ready')
+                            <div role="tabpanel" class="hidden px-5 pt-5 pb-6">
                             <p>
                                 В своём стремлении повысить качество жизни, они забывают, что граница
                                 обучения кадров однозначно фиксирует необходимость модели развития.
                                 Как уже неоднократно упомянуто, многие известные личности.
                             </p>
                             <div class="mt-7 flex flex-wrap gap-x-3 gap-y-4">
-                                <a
-                                    data-hk="0-0-0-0-1-11-5-0-0-1-8-0-0"
-                                    class="button relative inline-flex cursor-pointer items-center justify-center text-center align-middle transition px-7 text-primary-500 hover:bg-primary-500 hover:text-white border border-primary-500 active:bg-primary-600 active:text-white active:border-primary-600 min-h-[45px] py-1 px-5 text-base rounded"
-                                    href="#"
-                                >Скачать результат</a
-                                >
+                                @if(isset($service->token_pdf) && !empty($service->token_pdf))
+                                    <a
+                                        data-hk="0-0-0-0-1-11-5-0-0-1-8-0-0"
+                                        class="button relative inline-flex cursor-pointer items-center justify-center text-center align-middle transition px-7 text-primary-500 hover:bg-primary-500 hover:text-white border border-primary-500 active:bg-primary-600 active:text-white active:border-primary-600 min-h-[45px] py-1 px-5 text-base rounded"
+                                        href="{{ route('profile.get-pdf', ['id' => $service->token_pdf]) }}"
+                                    >Скачать результат</a
+                                    >
+                                @endif
                                 <div class="grow"></div>
                                 <button
                                     type="button"
@@ -333,6 +338,7 @@
                                 </button>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
             </article>
