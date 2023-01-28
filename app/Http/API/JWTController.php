@@ -4,14 +4,25 @@ namespace App\Http\API;
 
 use App\Http\Controllers\Controller;
 use http\Url;
+use Log;
 use Throwable;
 
+/**
+ * Class JWTController
+ * @package App\Http\API
+ */
 class JWTController extends Controller
 {
 
     private const FILE_NAME = "apiKey.csv";
+    /**
+     * @var string
+     */
     private string $JWT;
 
+    /**
+     * @return bool
+     */
     private function generateJWT(): bool
     {
         try {
@@ -19,8 +30,7 @@ class JWTController extends Controller
             [$identity, $secret_key] = $this->getCredentials();
 
         } catch (Throwable $e) {
-//            Дописать тригер на ошибку
-            report($e);
+            Log::error("Error generating JWT " . $e);
 
             return false;
         }
@@ -58,11 +68,20 @@ class JWTController extends Controller
     }
 
 
+    /**
+     * @param $data
+     * @return string
+     */
     private function base64url_encode($data): string
     {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 
+    /**
+     * @param $identity
+     * @param $secret
+     * @return string
+     */
     private function JWT($identity, $secret): string
     {
 //            Identity key
@@ -82,6 +101,9 @@ class JWTController extends Controller
 
     }
 
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         $this->generateJWT();

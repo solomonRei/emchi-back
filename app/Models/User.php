@@ -71,7 +71,6 @@ class User extends Authenticatable
         return $this->notifications->where('status', $status)->count();
     }
 
-
     public function notifications()
     {
         return $this->hasMany(Notification::class, 'user_id', 'id');
@@ -85,11 +84,6 @@ class User extends Authenticatable
     public function services()
     {
         return $this->hasMany(Service::class, 'user_id', 'user_id');
-    }
-
-    public function analyses()
-    {
-        return $this->hasMany(Analysis::class);
     }
 
     public function payments()

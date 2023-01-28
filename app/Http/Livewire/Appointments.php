@@ -20,8 +20,12 @@ class Appointments extends Component
 
     public function mount(): void
     {
-        if (isset($_GET['mp']) && !empty($_GET['mp'])) $this->displayCanceledAppointments();
-        else $this->displayAllAppointments();
+        if (isset($_GET['mp']) && !empty($_GET['mp'])) {
+            $this->displayCanceledAppointments();
+        }
+        else {
+            $this->displayAllAppointments();
+        }
     }
 
 

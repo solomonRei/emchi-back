@@ -21,18 +21,36 @@ use Hash;
 use Log;
 use Mail;
 
+/**
+ * Class UserController
+ * @package App\Http\API
+ */
 class UserController extends Controller
 {
+    /**
+     * @var \Illuminate\Contracts\Auth\Authenticatable|User|null
+     */
     private \Illuminate\Contracts\Auth\Authenticatable|null|User $user;
+    /**
+     * @var RequestController
+     */
     private $API;
 
+    /**
+     * UserController constructor.
+     */
     public function __construct()
     {
         $this->user = Auth::user();
         $this->API = new RequestController();
     }
 
-    public function getCredentialsHandler($phone)
+    /**
+     * @param $phone
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \JsonException
+     */
+    public function getCredentialsHandler($phone): \Illuminate\Http\RedirectResponse
     {
         $response = $this->API->sendResponse([
             'limit' => 100,
@@ -78,24 +96,10 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function getUsers2()
-    {
-//        $response = $this->API->sendResponse([
-//            'limit' => 100,
-//            'offset' => 0,
-////            'state' => 'ready',
-//        ], 'entries', 'GET');
-
-        $response = $this->API->sendResponse([
-            'limit' => 100,
-            'offset' => 0,
-        ], 'clients/1089', 'GET');
-
-        dd($response);
-
-    }
-
-    public function getClinics()
+    /**
+     * @throws \JsonException
+     */
+    public function getClinics(): void
     {
         $response = $this->API->sendResponse([
             'limit' => 100,
@@ -122,7 +126,10 @@ class UserController extends Controller
         }
     }
 
-    public function getDoctors()
+    /**
+     * @throws \JsonException
+     */
+    public function getDoctors(): void
     {
         $response = $this->API->sendResponse([
             'userGroup' => 'medical_staff',
@@ -146,7 +153,10 @@ class UserController extends Controller
         }
     }
 
-    public function getAllServices()
+    /**
+     * @throws \JsonException
+     */
+    public function getAllServices(): void
     {
         if ($this->user->user_id !== 0 && $this->user !== NULL) {
             $response = $this->API->sendResponse([
@@ -170,7 +180,12 @@ class UserController extends Controller
         }
     }
 
-    public function getPDF($service_id)
+    /**
+     * @param $service_id
+     * @return array|\Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function getPDF($service_id): array|\Illuminate\Http\RedirectResponse
     {
         if ($this->user->user_id !== 0 && $this->user !== NULL) {
             $validator = Validator::make([
@@ -188,11 +203,14 @@ class UserController extends Controller
 
             $service = Service::where('token_pdf', $service_id)->first();
             $this->API->setHeader('Accept-Encoding', 'gzip');
-            return $this->API->sendReponseClear([], 'entries/' . $service['service_id'] . '/pdf', 'GET');
+            return $this->API->sendResponseClear([], 'entries/' . $service['service_id'] . '/pdf', 'GET');
         }
     }
 
-    public function getServices()
+    /**
+     * @throws \JsonException
+     */
+    public function getServices(): void
     {
         if ($this->user->user_id !== 0 && $this->user !== NULL) {
             $response = $this->API->sendResponse([
@@ -244,7 +262,10 @@ class UserController extends Controller
         }
     }
 
-    public function getPayments()
+    /**
+     * @throws \JsonException
+     */
+    public function getPayments(): void
     {
         if ($this->user->user_id !== 0 && $this->user !== NULL) {
             $response = $this->API->sendResponse([
@@ -287,7 +308,10 @@ class UserController extends Controller
         }
     }
 
-    public function getAppointments()
+    /**
+     * @throws \JsonException
+     */
+    public function getAppointments(): void
     {
         $this->user = Auth::user();
         if ($this->user->user_id !== 0 && $this->user !== NULL) {
@@ -334,6 +358,10 @@ class UserController extends Controller
     }
 
 
+    /**
+     * @return bool
+     * @throws \JsonException
+     */
     public function processingPayments(): bool
     {
         if ($this->user->user_id !== 0 && $this->user !== NULL) {
@@ -368,6 +396,13 @@ class UserController extends Controller
         return false;
     }
 
+    /**
+     * @param string $name
+     * @param string $surname
+     * @param string $lastName
+     * @return bool
+     * @throws \JsonException
+     */
     public function updateUser(string $name = '', string $surname = '', string $lastName = ''): bool
     {
 
@@ -401,10 +436,6 @@ class UserController extends Controller
             }
             return false;
         }
-
-//        $surname = $user_exists && empty($surname) ? $this->user->surname : $surname;
-//        $name = $user_exists && empty($name) ? $this->user->name : $name;
-//        $lastName = $user_exists && empty($lastName) ? $this->user->lastName : $lastName;
 
         return true;
     }

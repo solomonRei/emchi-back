@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
+class Service extends BaseModel
 {
     use HasFactory;
 
@@ -58,26 +57,6 @@ class Service extends Model
     ];
 
 
-    private function rdate($param, $time = 0)
-    {
-        if ((int)$time === 0) {
-            $time = time();
-        }
-        $MonthNames = array("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря");
-        if (!str_contains($param, 'M')) {
-            return date($param, $time);
-        }
-
-        return date(str_replace('M', $MonthNames[date('n', $time) - 1], $param), $time);
-    }
-
-    protected function dateNormal(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => $this->rdate('d M Y', strtotime($this->date))
-        );
-    }
-
     public function analyses()
     {
         return $this->hasMany(Analysis::class);
@@ -87,11 +66,6 @@ class Service extends Model
     {
         return $this->hasOne(Doctor::class, 'doctor_id', 'doctor_id');
     }
-
-//    public function payments()
-//    {
-//        return $this->hasMany(Payments::class, 'order_id', 'order_id');
-//    }
 
     public function user()
     {

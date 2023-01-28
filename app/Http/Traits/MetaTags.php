@@ -16,7 +16,7 @@ trait MetaTags
      * @param string $description
      * @param array $keywords
      */
-    public function setMeta($title, $description = '', $keywords = [])
+    public function setMeta($title, $description = '', $keywords = []): void
     {
         Meta::setTitle($title)
             ->setDescription($description)

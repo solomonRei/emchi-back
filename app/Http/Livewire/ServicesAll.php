@@ -44,8 +44,9 @@ class ServicesAll extends Component
         $user = Auth::user();
         $sort = request()->query('sort', 'latest');
 
-        if ($this->services_status)
+        if ($this->services_status) {
             $this->resetPage();
+        }
 
         if($this->sort_mode === 'ASC' || $sort === 'oldest') {
             $this->services_obj = Service::where('user_id', $user->user_id)

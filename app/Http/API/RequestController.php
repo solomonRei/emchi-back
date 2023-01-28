@@ -6,14 +6,11 @@ use App\Http\API\JWTController;
 use App\Http\Controllers\Controller;
 use http\Client\Request;
 use Nette\Utils\JsonException;
-use ZipArchive;
 
 class RequestController extends Controller
 {
     private array $headers = [];
     private string $token;
-
-//    private const API_URL = "http://192.168.133.21:32000/api/v2/";
 
     public function __construct()
     {
@@ -69,7 +66,10 @@ class RequestController extends Controller
 
     }
 
-    public function sendReponseClear(array $data, string $action, string $method)
+    /**
+     * @throws \Exception
+     */
+    public function sendResponseClear(array $data, string $action, string $method): array|\Illuminate\Http\RedirectResponse
     {
         $data_build = http_build_query($data);
 
@@ -96,11 +96,8 @@ class RequestController extends Controller
         curl_setopt($ch, CURLOPT_FILE, $out);
         try {
             $data = curl_exec($ch);
-//            echo "<br>Error is : " . curl_error($ch);
             curl_close($ch);
             fclose($out);
-
-            echo "File $filename is downloading...";
 
             // unzip
 //            $zip = new ZipArchive;

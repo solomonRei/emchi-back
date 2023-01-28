@@ -13,11 +13,18 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\API\UserController;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Class ProfileController
+ * @package App\Http\Controllers
+ */
 class ProfileController extends Controller
 {
     use MetaTags;
 
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function profile()
     {
         $user = Auth::user();
@@ -27,6 +34,10 @@ class ProfileController extends Controller
         return view('frontend.profile', compact('user'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function services(Request $request)
     {
         $user = Auth::user();
@@ -39,6 +50,10 @@ class ProfileController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function payments(Request $request)
     {
         $user = Auth::user();
@@ -74,21 +89,24 @@ class ProfileController extends Controller
 
         Notification::where('type', 'payment')->where('user_id', $user->id)->update(['status' => 1]);
 
-//        dd($payments);
-
-//        $userController = new UserController();
-//        $userController->getPayments();
-
         return view('frontend.payment', compact('user', 'payments'));
 
     }
 
+    /**
+     * @param $id
+     * @return array|\Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
     public function getPDF($id)
     {
-        $userController = new UserController();
-        return $userController->getPDF($id);
+        return (new UserController())->getPDF($id);
     }
 
+    /**
+     * @param $filename
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function downloadFile($filename)
     {
         if (file_exists(storage_path("app/private/").$filename)) {
@@ -98,6 +116,10 @@ class ProfileController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function analyzes(Request $request)
     {
         $user = Auth::user();
@@ -113,6 +135,10 @@ class ProfileController extends Controller
         return view('frontend.analyzes', compact('user'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function records(Request $request)
     {
         $user = Auth::user();

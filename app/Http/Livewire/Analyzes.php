@@ -24,7 +24,7 @@ class Analyzes extends Component
         $this->analyzes();
     }
 
-    public function analyzes()
+    public function analyzes(): void
     {
         $this->user = Auth::user();
         if($this->sort_mode === 'ASC') {
@@ -54,7 +54,7 @@ class Analyzes extends Component
         $this->analyzes();
     }
 
-    public function search()
+    public function search(): void
     {
         $this->user = Auth::user();
         $this->results = Service::where('title', 'like', "%{$this->searchTerm}%")
@@ -65,7 +65,7 @@ class Analyzes extends Component
             ->setPath(route('profile.analyzes'));
     }
 
-    public function updated($field)
+    public function updated($field): void
     {
         if ($field === 'searchTerm') {
             $this->search();
