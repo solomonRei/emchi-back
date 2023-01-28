@@ -15,6 +15,19 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <style>
+        .registration-link {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .registration-link:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div id="app">

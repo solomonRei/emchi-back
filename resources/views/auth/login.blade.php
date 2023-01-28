@@ -5,8 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Авторизация</div>
-
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>Авторизация</div>
+                    <a href="{{ route('credentials') }}" class="registration-link">Зарегистрироваться</a>
+                </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login.post') }}">
                         @csrf
