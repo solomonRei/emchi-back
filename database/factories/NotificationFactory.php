@@ -23,8 +23,13 @@ class NotificationFactory extends Factory
     public function definition()
     {
         return [
+            'user_id' => $this->faker->randomNumber(),
             'name' => $this->faker->name,
-            'status' => $this->faker->randomElement(["1","0"]),
+            'type' => $this->faker->word,
+            'status' => $this->faker->randomElement(['1','0']),
+            'deleted_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

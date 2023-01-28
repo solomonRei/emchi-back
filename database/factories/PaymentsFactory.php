@@ -23,10 +23,18 @@ class PaymentsFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
-            'date' => $this->faker->word,
-            'amount' => $this->faker->randomFloat(0, 0, 9999999999.),
-            'status' => $this->faker->randomElement(["0","1"]),
+            'order_id' => $this->faker->randomNumber(),
+            'notification_id' => $this->faker->randomNumber(),
+            'clinic_id' => $this->faker->randomNumber(),
+            'user_id' => $this->faker->randomNumber(),
+            'customerId' => $this->faker->randomNumber(),
+            'customerType' => $this->faker->randomElement(['client','company']),
+            'date' => $this->faker->date,
+            'sum' => $this->faker->randomFloat(2,0,9999),
+            'finalSum' => $this->faker->randomFloat(2,0,9999),
+            'orderPaidStatus' => $this->faker->word,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

@@ -14,10 +14,12 @@ class CreateNotificationsTable extends Migration
     public function up()
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->string('id')->autoIncrement();
-            $table->string('name')->nullable();
-            $table->enum('status', ["1","0"]);
-            $table->softDeletes();
+            $table->id();
+            $table->unsignedInteger('user_id')->nullable();
+            $table->string('name',255)->nullable();
+            $table->string('type',200)->notNull();
+            $table->enum('status', ['1','0'])->default('0');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

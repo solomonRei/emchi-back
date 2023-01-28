@@ -23,13 +23,30 @@ class ServiceFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
-            'price' => $this->faker->randomFloat(0, 0, 9999999999.),
-            'date' => $this->faker->time(),
-            'description' => $this->faker->text,
-            'testimony' => $this->faker->text,
-            'restriction' => $this->faker->text,
-            'result' => $this->faker->text,
+            'service_id' => $this->faker->unique()->numberBetween(1, 100),
+            'notification_id' => $this->faker->numberBetween(1, 100),
+            'title' => $this->faker->sentence,
+            'number' => Str::random(10),
+            'order_id' => $this->faker->numberBetween(1, 100),
+            'user_id' => $this->faker->numberBetween(1, 100),
+            'clinicId' => $this->faker->numberBetween(1, 100),
+            'doctor_id' => $this->faker->numberBetween(1, 100),
+            'kind' => $this->faker->word,
+            'entryTypeId' => $this->faker->numberBetween(1, 100),
+            'parentEntryId' => $this->faker->numberBetween(1, 100),
+            'price' => $this->faker->randomFloat(2, 0, 10000),
+            'amount' => $this->faker->numberBetween(1, 10),
+            'sum' => $this->faker->numberBetween(1, 10000),
+            'finalSum' => $this->faker->numberBetween(1, 10000),
+            'date' => $this->faker->date(),
+            'status' => $this->faker->word,
+            'description' => $this->faker->paragraph,
+            'testimony' => $this->faker->paragraph,
+            'restriction' => $this->faker->paragraph,
+            'result' => $this->faker->paragraph,
+            'token_pdf' => Str::random(10),
+            'created_at' => $this->faker->dateTime(),
+            'updated_at' => $this->faker->dateTime(),
         ];
     }
 }

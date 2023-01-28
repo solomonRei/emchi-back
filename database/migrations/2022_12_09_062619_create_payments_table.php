@@ -15,10 +15,16 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('date');
-            $table->double('amount');
-            $table->enum('status', ["0","1"]);
+            $table->unsignedInteger('order_id');
+            $table->integer('notification_id')->nullable();
+            $table->integer('clinic_id')->nullable();
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('customerId')->nullable();
+            $table->enum('customerType', ['client', 'company'])->default('client');
+            $table->string('date', 255);
+            $table->double('sum');
+            $table->double('finalSum');
+            $table->string('orderPaidStatus', 50);
             $table->timestamps();
         });
     }

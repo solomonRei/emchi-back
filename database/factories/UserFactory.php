@@ -23,16 +23,23 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
-            'login' => $this->faker->word,
+            'user_id' => $this->faker->numberBetween(1, 10),
+            'login' => $this->faker->userName,
+            'email' => $this->faker->email,
             'password' => $this->faker->password,
-            'dateBirth' => $this->faker->word,
             'phone' => $this->faker->phoneNumber,
-            'idPolis' => $this->faker->randomNumber(),
-            'inn' => $this->faker->randomNumber(),
-            'snils' => $this->faker->randomNumber(),
-            'workplace' => $this->faker->word,
-            'remember_token' => $this->faker->word,
+            'name' => $this->faker->firstName,
+            'surname' => $this->faker->lastName,
+            'secondName' => $this->faker->lastName,
+            'birthdate' => $this->faker->date('Y-m-d', 'now'),
+            'idPolis' => $this->faker->randomNumber(8),
+            'inn' => $this->faker->randomNumber(12),
+            'snils' => $this->faker->randomNumber(11),
+            'workplace' => $this->faker->company,
+            'remember_token' => $this->faker->password(60),
+            'created_at' => $this->faker->dateTimeBetween('-1 years', 'now', null),
+            'updated_at' => $this->faker->dateTimeBetween('-1 years', 'now', null),
+            'login_at' => $this->faker->dateTimeBetween('-1 years', 'now', null),
         ];
     }
 }
