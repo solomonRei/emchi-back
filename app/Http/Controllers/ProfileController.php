@@ -33,22 +33,9 @@ class ProfileController extends Controller
 
         $this->setMeta('Услуги', 'Описание');
 
-//        $userController = new UserController();
-//        $userController->getServices();
-        if ($request->date === NULL || $request->date === 'latest') {
-            $order = 'DESC';
-        } else {
-            $order = 'ASC';
-        }
-
-        $my_services = Service::where('user_id', $user->user_id)
-            ->whereNot('kind', 'analysis')
-            ->orderBy('date', $order)
-            ->paginate(10);
-
         Notification::where('type', 'service')->where('user_id', $user->id)->update(['status' => 1]);
 
-        return view('frontend.services', compact('user', 'my_services'));
+        return view('frontend.services', compact('user'));
 
     }
 
@@ -117,25 +104,13 @@ class ProfileController extends Controller
 
         $this->setMeta('Анализы', 'Описание');
 
-//        $userController = new UserController();
-//        $userController->getServices();
-        if ($request->date === NULL || $request->date === 'latest') {
-            $order = 'DESC';
-        } else {
-            $order = 'ASC';
-        }
-
-        $analyzes = Service::where('user_id', $user->user_id)
-//            ->where('kind', 'analysis')
-            ->orderBy('date', $order)
-            ->paginate(10);
 
         Notification::whereHas('services', function ($q) {
             $q->where('kind', 'analysis')->where('status', 'ready');
         })->where('type', 'analysis')->where('user_id', $user->id)->update(['status' => 1]);
 
 
-        return view('frontend.analyzes', compact('user', 'analyzes'));
+        return view('frontend.analyzes', compact('user'));
     }
 
     public function records(Request $request)
@@ -154,11 +129,11 @@ class ProfileController extends Controller
             $appointments = Record::where('user_id', $user->user_id)
                 ->where('status', 'canceled')
                 ->orderBy('date', $order)
-                ->paginate(10);
+                ->paginate(2);
         } else {
             $appointments = Record::where('user_id', $user->user_id)
                 ->orderBy('date', $order)
-                ->paginate(10);
+                ->paginate(2);
 
         }
 

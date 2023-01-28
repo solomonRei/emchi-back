@@ -42,11 +42,12 @@ class ServicesAll extends Component
     public function displayUserServices(): void
     {
         $user = Auth::user();
+        $sort = request()->query('sort', 'latest');
 
         if ($this->services_status)
             $this->resetPage();
 
-        if($this->sort_mode === 'ASC') {
+        if($this->sort_mode === 'ASC' || $sort === 'oldest') {
             $this->services_obj = Service::where('user_id', $user->user_id)
                 ->whereNot('kind', 'analysis')
                 ->orderBy('date', 'ASC')

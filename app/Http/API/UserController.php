@@ -27,23 +27,6 @@ class UserController extends Controller
         $this->API = new RequestController();
     }
 
-    public function getUsers2()
-    {
-//        $response = $this->API->sendResponse([
-//            'limit' => 100,
-//            'offset' => 0,
-//            'state' => 'ready',
-//        ], 'entries', 'GET');
-        return response()->download(storage_path("app/private/")."16748399981391.zip");
-//        $response = $this->API->sendResponse([
-//            'limit' => 100,
-//            'offset' => 0,
-//        ], 'entries/1/pdf', 'GET');
-
-        dd($response);
-
-    }
-
     public function getClinics()
     {
         $response = $this->API->sendResponse([

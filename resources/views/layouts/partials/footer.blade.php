@@ -24,23 +24,18 @@
                 <ul class="social flex gap-5">
                     <li>
                         <a
-                            href="#"
+                            href="https://vk.com/hippocratinfo"
                             class="flex h-6 w-6 items-center justify-center rounded-full bg-white text-primary-500 transition hover:scale-105 focus:outline-none focus-visible:scale-105"
                             aria-label="Instagram"
-                        ><svg viewBox="0 0 10 10" class="h-3.5 fill-current" aria-hidden="true">
-                                <path
-                                    d="M5 .9h2.05c.48 0 .72.12.9.18.24.12.42.19.6.37s.3.36.37.6c.06.18.12.42.18.9v4.1c0 .48-.12.72-.18.9-.12.24-.19.42-.37.6s-.36.3-.6.37a4.5 4.5 0 0 1-.9.18h-4.1c-.48 0-.72-.12-.9-.18-.24-.12-.42-.19-.6-.37s-.3-.36-.37-.6a4.53 4.53 0 0 1-.18-.9v-4.1c0-.48.12-.72.18-.9.12-.24.19-.42.37-.6s.36-.3.6-.37c.18-.06.42-.12.9-.18H5ZM5 0H2.95a3.02 3.02 0 0 0-2.1.84c-.3.3-.43.55-.6.9-.13.3-.19.67-.25 1.21v4.1a3.02 3.02 0 0 0 .84 2.1c.3.3.55.43.9.6.3.13.67.19 1.21.25h4.1a3.02 3.02 0 0 0 2.1-.84c.3-.3.43-.55.6-.9.13-.3.19-.67.25-1.21v-4.1a3.02 3.02 0 0 0-.84-2.1 2.9 2.9 0 0 0-.9-.6C7.95.11 7.58.05 7.04 0H5Z"
-                                ></path>
-                                <path
-                                    d="M5 2.41A2.57 2.57 0 0 0 2.41 5 2.57 2.57 0 0 0 5 7.59 2.57 2.57 0 0 0 7.59 5 2.57 2.57 0 0 0 5 2.41Zm0 4.28A1.68 1.68 0 1 1 5 3.3c.9 0 1.69.73 1.69 1.69 0 .9-.79 1.69-1.69 1.69Zm2.65-3.74a.6.6 0 1 0 0-1.2.6.6 0 0 0 0 1.2Z"
-                                ></path></svg
-                            ></a>
+                            target="_blank"
+                        ><img src="/assets/img/vk.svg"></a>
                     </li>
                     <li>
                         <a
                             href="#"
                             class="flex h-6 w-6 items-center justify-center rounded-full bg-white text-primary-500 transition hover:scale-105 focus:outline-none focus-visible:scale-105"
                             aria-label="Telegram"
+                            target="_blank"
                         ><svg
                                 viewBox="0 0 10 9"
                                 class="relative right-px top-px h-3 fill-current"
@@ -72,7 +67,7 @@
                     >+7 (3012) 37-99-20</a
                     ><a href="mailto:hippocrat-info@mail.ru" class="transition hover:opacity-70"
                     >hippocrat-info@mail.ru</a
-                    ><span>something</span>
+                    >
                 </div>
             </div>
         </div>

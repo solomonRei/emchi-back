@@ -49,7 +49,7 @@
         @endif
     </div>
     <div class="grid gap-8">
-        @if($services->count() === 0)
+        @if($services === null || $services->count() === 0)
             @php
                 return redirect()->route('404');
             @endphp
@@ -346,5 +346,5 @@
         @endif
 
     </div>
-    {{ $services->links('vendor.pagination.custom-pagination', ['route' => route('profile.services')]) }}
+    {{ $services->appends(['sort' => $sort_state])->links('vendor.pagination.custom-pagination', ['route' => route('profile.services')]) }}
 </section>
