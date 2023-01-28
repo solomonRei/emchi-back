@@ -36,16 +36,39 @@ class CustomLoginController extends Controller
         return view('auth.login');
     }
 
+    public function getCredentials()
+    {
+        return view('auth.credentials');
+    }
+
+    public function checkCredentials(Request $request)
+    {
+        $request->merge(['phone' => preg_replace('/[^0-9]/', '', $request->phone)]);
+        $request->validate(
+            ['phone' => 'required|regex:/^\+?[78][-\(]?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}$/',],
+            [
+                'phone.required' => 'Введите номер телефона',
+                'phone.regex' => 'Формат телефона некорректен',
+            ]
+        );
+
+        return (new UserController())->getCredentialsHandler($request->phone);
+    }
+
     public function login(Request $request)
     {
         $request->validate([
             'login' => 'required|string|max:255',
             'password' => 'required|string|max:255',
-        ]);
+            'remember' => 'nullable'
+        ], [
+                'login.required' => 'Введите логин',
+                'password.required' => 'Введите пароль',
+            ]);
 
         $credentials = $request->only('login', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->remember)) {
             // update new User with data and user_ID
             $userController = new UserController();
             if (!$userController->updateUser()) {

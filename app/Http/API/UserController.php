@@ -3,6 +3,7 @@
 namespace App\Http\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CredentialsMail;
 use App\Models\Clinic;
 use App\Models\Doctor;
 use App\Models\Notification;
@@ -11,10 +12,14 @@ use App\Models\Record;
 use App\Models\Service;
 use App\Models\ServiceAll;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\API\RequestController;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Hash;
+use Log;
+use Mail;
 
 class UserController extends Controller
 {
@@ -25,6 +30,69 @@ class UserController extends Controller
     {
         $this->user = Auth::user();
         $this->API = new RequestController();
+    }
+
+    public function getCredentialsHandler($phone)
+    {
+        $response = $this->API->sendResponse([
+            'limit' => 100,
+            'phone' => $phone,
+            'offset' => 0,
+        ], 'clients', 'GET');
+
+        if ($response['status'] === 200 && $response['type'] === 'success') {
+            $phone_user = $response['response']['data'][0]['phone'];
+            $email = $response['response']['data'][0]['email'];
+
+            try {
+                $user = User::where('phone', $phone_user)->firstOrFail();
+                session()->flash('error', 'Вы уже зарегистрированы в системе.');
+                return redirect()->back();
+            } catch (ModelNotFoundException $e) {
+
+                $login = Str::random(8);
+                $password = Str::random(12);
+
+                $user = new User;
+                $user->phone = $phone_user;
+                $user->login = $login;
+                $user->email = $email;
+                $user->password = Hash::make($password);
+                $user->save();
+
+                $credentials = ['login' => $login, 'password' => $password];
+
+                // Отправка сообщения на почту
+                if (!empty($user->email)) {
+                    if (!Mail::to($user->email)->send(new CredentialsMail($user, $login, $password))) {
+                        Log::error("Error sending email to " . $user->email);
+                    }
+                }
+
+                session()->flash('credentials', $credentials);
+                return redirect()->back();
+            }
+        }
+
+        session()->flash('error', 'Вы уже зарегистрированы в системе.');
+        return redirect()->back();
+    }
+
+    public function getUsers2()
+    {
+//        $response = $this->API->sendResponse([
+//            'limit' => 100,
+//            'offset' => 0,
+////            'state' => 'ready',
+//        ], 'entries', 'GET');
+
+        $response = $this->API->sendResponse([
+            'limit' => 100,
+            'offset' => 0,
+        ], 'clients/1089', 'GET');
+
+        dd($response);
+
     }
 
     public function getClinics()
@@ -119,7 +187,7 @@ class UserController extends Controller
             }
 
             $service = Service::where('token_pdf', $service_id)->first();
-                $this->API->setHeader('Accept-Encoding', 'gzip');
+            $this->API->setHeader('Accept-Encoding', 'gzip');
             return $this->API->sendReponseClear([], 'entries/' . $service['service_id'] . '/pdf', 'GET');
         }
     }
@@ -153,7 +221,7 @@ class UserController extends Controller
                             'amount' => $service['amount'],
                             'doctor_id' => $service['userId'],
                             'parentEntryId' => $service['parentEntryId'],
-                            'token_pdf' => hash('sha256', time().$service['title'].$service['orderId'])
+                            'token_pdf' => hash('sha256', time() . $service['title'] . $service['orderId'])
                         ]
                     );
 

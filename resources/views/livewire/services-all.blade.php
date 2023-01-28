@@ -49,11 +49,7 @@
         @endif
     </div>
     <div class="grid gap-8">
-        @if($services === null || $services->count() === 0)
-            @php
-                return redirect()->route('404');
-            @endphp
-        @else
+        @if($services !== null && $services->count() !== 0)
             @foreach($services as $service)
             <article class="service rounded-lg bg-white shadow-shifted">
                 <div class="grid sm:grid-cols-[38%_minmax(0,1fr)]">
@@ -344,7 +340,8 @@
             </article>
         @endforeach
         @endif
-
     </div>
-    {{ $services->appends(['sort' => $sort_state])->links('vendor.pagination.custom-pagination', ['route' => route('profile.services')]) }}
+    @if($services !== null && $services->count() !== 0)
+        {{ $services->appends(['sort' => $sort_state])->links('vendor.pagination.custom-pagination', ['route' => route('profile.services')]) }}
+    @endif
 </section>

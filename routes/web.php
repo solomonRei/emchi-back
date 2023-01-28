@@ -14,11 +14,17 @@ Route::get('404', function () {
     return view('layouts.404');
 })->name('404');
 
+Route::fallback(function(){
+    return view('layouts.404');
+});
+
+
 Route::get('get-users', [UserController::class, 'getUsers2']);
 
-Route::middleware('profile')->group(function () {
+Route::middleware(['profile', 'web'])->group(function () {
+    Route::get('get-credentials', [CustomLoginController::class, 'getCredentials'])->name('credentials');
+    Route::post('get-credentials-auth', [CustomLoginController::class, 'checkCredentials'])->name('credentials.post');
     Route::get('login', [CustomLoginController::class, 'index'])->name('login');
-    Route::get('make-appointment', [CustomLoginController::class, 'index'])->name('login');
     Route::post('profile-login', [CustomLoginController::class, 'login'])->name('login.post');
     Route::post('logout', [CustomLoginController::class, 'logout'])->name('logout');
 
@@ -38,8 +44,6 @@ Route::middleware('profile')->group(function () {
             });
     });
 });
-
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //Auth::routes();
 
