@@ -121,6 +121,7 @@
                                 type="button"
                                 class="flex items-center whitespace-nowrap px-4 py-2 transition-[color] hover:text-primary-600 [.expanded_&amp;]:hidden"
                                 onclick="this.closest('article').classList.toggle('expanded')"
+                                style="display: none"
                             >
                                 Подробнее
                                 <svg
@@ -135,7 +136,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tabs hidden sm:pt-4 [.expanded_&amp;]:block">
+                <div class="tabs hidden sm:pt-4 [.expanded_&amp;]:block" style="display: none">
                     <div role="tablist" class="flex flex-wrap justify-around">
                         <button
                             type="button"

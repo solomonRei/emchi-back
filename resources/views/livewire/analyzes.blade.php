@@ -132,7 +132,7 @@
                         </div>
                     </div>
                     <div
-                        class="flex flex-col items-start border-t border-primary-500/10 px-6 pb-7 pt-7 sm:border-t-0 sm:border-l sm:pb-5"
+                        class="flex flex-col items-start border-t border-primary-500/10 px-6 pb-7 pt-7 sm:border-t-0 sm:border-l sm:pb-5" style="display: none"
                     >
                         <div class="mb-3">Результат:</div>
                         <p class="mb-7 font-light">
